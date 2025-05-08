@@ -13,7 +13,7 @@
         android:theme="@style/Theme.AndroidUrfu"
         tools:targetApi="31">
         <activity
-            android:name=".task01parallelism.MainActivity"
+            android:name=".task04algorithms.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AndroidUrfu">
             <intent-filter>
