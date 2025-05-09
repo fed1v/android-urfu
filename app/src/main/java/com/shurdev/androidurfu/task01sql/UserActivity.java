@@ -36,7 +36,7 @@ public class UserActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.saveButton);
 
         sqlHelper = new DatabaseHelper(this);
-        db = sqlHelper.getWritableDatabase();
+        db = sqlHelper.open();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
