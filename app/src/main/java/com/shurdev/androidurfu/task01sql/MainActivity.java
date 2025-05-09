@@ -1,11 +1,13 @@
 package com.shurdev.androidurfu.task01sql;
 
-import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -15,51 +17,74 @@ import com.shurdev.androidurfu.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView userList;
-    DatabaseHelper databaseHelper;
+    DatabaseHelper sqlHelper;
     SQLiteDatabase db;
     Cursor userCursor;
     SimpleCursorAdapter userAdapter;
+    ListView userList;
+    EditText userFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        userList = (ListView) findViewById(R.id.userList);
+        userFilter = (EditText) findViewById(R.id.userFilter);
 
-        userList = findViewById(R.id.list);
-        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
-                intent.putExtra("id", id);
-                startActivity(intent);
-            }
-        });
-
-        databaseHelper = new DatabaseHelper(getApplicationContext());
+        sqlHelper = new DatabaseHelper(getApplicationContext());
         // создаем базу данных
-        databaseHelper.create_db();
+        sqlHelper.create_db();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // открываем подключение
-        db = databaseHelper.open();
-        //получаем данные из бд в виде курсора
-        userCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE, null);
-        // определяем, какие столбцы из курсора будут выводиться в ListView
-        String[] headers = new String[]{DatabaseHelper.COLUMN_NAME, DatabaseHelper.COLUMN_YEAR};
-        // создаем адаптер, передаем в него курсор
-        userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
-                userCursor, headers, new int[]{android.R.id.text1, android.R.id.text2}, 0);
-        userList.setAdapter(userAdapter);
-    }
+        try {
+            db = sqlHelper.open();
+            userCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE, null);
+            String[] headers = new String[]{DatabaseHelper.COLUMN_NAME, DatabaseHelper.COLUMN_YEAR};
+            userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
+                    userCursor, headers, new int[]{android.R.id.text1, android.R.id.text2}, 0);
 
-    // по нажатию на кнопку запускаем UserActivity для добавления данных
-    public void add(View view) {
-        Intent intent = new Intent(this, UserActivity.class);
-        startActivity(intent);
+            // если в текстовом поле есть текст, выполняем фильтрацию
+            // данная проверка нужна при переходе от одной ориентации экрана к другой
+            if (!userFilter.getText().toString().isEmpty())
+                userAdapter.getFilter().filter(userFilter.getText().toString());
+
+            // установка слушателя изменения текста
+            userFilter.addTextChangedListener(new TextWatcher() {
+
+                public void afterTextChanged(Editable s) {
+                }
+
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                // при изменении текста выполняем фильтрацию
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    userAdapter.getFilter().filter(s.toString());
+                }
+            });
+
+            // устанавливаем провайдер фильтрации
+            userAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+                @Override
+                public Cursor runQuery(CharSequence constraint) {
+
+                    if (constraint == null || constraint.length() == 0) {
+
+                        return db.rawQuery("select * from " + DatabaseHelper.TABLE, null);
+                    } else {
+                        return db.rawQuery("select * from " + DatabaseHelper.TABLE + " where " +
+                                DatabaseHelper.COLUMN_NAME + " like ?", new String[]{"%" + constraint.toString() + "%"});
+                    }
+                }
+            });
+
+            userList.setAdapter(userAdapter);
+        } catch (SQLException ex) {
+        }
     }
 
     @Override
