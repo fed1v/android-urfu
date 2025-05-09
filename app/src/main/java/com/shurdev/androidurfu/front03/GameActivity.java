@@ -1,4 +1,4 @@
-package com.shurdev.androidurfu.task02;
+package com.shurdev.androidurfu.front03;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -12,19 +12,19 @@ import com.shurdev.androidurfu.R;
 
 public class GameActivity extends AppCompatActivity {
 
-    GameField gameField;
+    GameSurfaceView gameSurfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        gameField = findViewById(R.id.gameField);
+        gameSurfaceView = findViewById(R.id.gameSurfaceView);
         Button buttonBack = findViewById(R.id.btnBack);
         TextView tvScore = findViewById(R.id.tvScore);
         new CountDownTimer(Integer.MAX_VALUE, 200) {
             @Override
             public void onTick(long l) {
-                tvScore.setText(gameField.getScore() + "");
+                tvScore.setText(gameSurfaceView.getScore() + "");
             }
 
             @Override
@@ -40,12 +40,12 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        gameField.pause();
+        gameSurfaceView.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        gameField.resume();
+        gameSurfaceView.resume();
     }
 }

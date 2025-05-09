@@ -1,4 +1,4 @@
-package com.shurdev.androidurfu.task02;
+package com.shurdev.androidurfu.front03;
 
 import android.graphics.Canvas;
 

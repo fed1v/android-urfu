@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".task02.GameActivity">
+    tools:context=".front03.GameActivity">
 
     <Button
         android:id="@+id/btnBack"
@@ -26,13 +26,14 @@
         app:layout_constraintStart_toEndOf="@id/btnBack"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.shurdev.androidurfu.task02.GameField
-        android:id="@+id/gameField"
+    <com.shurdev.androidurfu.front03.GameSurfaceView
+        android:id="@+id/gameSurfaceView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+        app:layout_constraintTop_toBottomOf="@id/tvScore" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
