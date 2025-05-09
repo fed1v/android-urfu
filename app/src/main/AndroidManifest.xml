@@ -13,7 +13,7 @@
         android:theme="@style/Theme.AndroidUrfu"
         tools:targetApi="31">
         <activity
-            android:name=".task01parallelism.MainActivity"
+            android:name=".task02.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AndroidUrfu">
             <intent-filter>
@@ -22,6 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".task02.GameActivity"
+            android:theme="@style/Theme.AndroidUrfu" />
     </application>
 
 </manifest>

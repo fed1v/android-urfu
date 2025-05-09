@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".task01parallelism.MainActivity">
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".task02.MainActivity">
 
-
-    <TextView
-        android:id="@+id/textView"
+    <ImageButton
+        android:id="@+id/btnStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@id/button"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@mipmap/ic_launcher" />
+
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnExit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Запустить поток"
-        app:layout_constraintTop_toBottomOf="@id/textView"
-        app:layout_constraintLeft_toLeftOf="parent"  />
+        android:text="Exit" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
